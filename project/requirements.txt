@@ -1,0 +1,10 @@
+fastapi[standard]
+torch
+diffusers
+transformers
+accelerate
+safetensors
+pillow
+requests
+python-multipart
+python-dotenv

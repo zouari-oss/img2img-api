@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -e
+
+MODEL_PATH="models/anything-v5.safetensors"
+MODEL_DOWNLOAD_LINK="https://huggingface.co/genai-archive/anything-v5/resolve/beb1810cac2af1ba73bea8c65743fe532eae5a5c/anything-v5.safetensors?download=true"
+
+echo "=== Checking if model already exists ==="
+if [ -f "$MODEL_PATH" ]; then
+  echo "✅ Model already exists at: $MODEL_PATH"
+else
+  echo "=== Model not found. Downloading... ==="
+  mkdir -p models/
+  curl -L -o "$MODEL_PATH" "$MODEL_DOWNLOAD_LINK"
+  echo "=== Download complete ==="
+fi
+
+echo "=== Creating virtual environment ==="
+python3 -m venv .venv
+
+echo "=== Activating venv ==="
+source .venv/bin/activate
+
+echo "=== Upgrading pip ==="
+pip install --upgrade pip
+
+echo "=== Installing requirements ==="
+pip install -r requirements.txt
+
+echo "=== Creating model directory ==="
+mkdir -p models/Stable-diffusion
+
+echo "=== Setup complete! ==="

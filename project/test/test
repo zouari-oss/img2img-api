@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Init bash colors
+[[ -s ${HOME}/.bash/.bash_colors ]] && . "${HOME}/.bash/.bash_colors"
+
+# Parameters
+images_url=('https://iili.io/B72CLut.png')
+prompt="Studio Ghibli-inspired Meta avatar, gentle anime-style digital human, soft hand-painted look, warm natural lighting, detailed expressive eyes, subtle freckles, soft watercolor shading, whimsical fantasy atmosphere, natural skin tones, flowing hair with soft motion, simple elegant clothing with slight futuristic elements, peaceful dreamy background, cinematic composition, ultra detailed, high quality illustration, film still from animated fantasy movie"
+negative_prompt="blurry, low quality, distorted face, bad anatomy, extra limbs, deformed hands, harsh lighting, plastic skin, overly realistic, noisy, oversharpened, 3d render look"
+
+# Test
+for url in "${images_url[@]}"; do
+  response=$(
+    curl -s -X POST "http://127.0.0.1:8000/api/generate" \
+      -H "Content-Type: application/json" \
+      -d @- <<EOF
+{
+  "image_url": "$url",
+  "prompt": "$prompt",
+  "negative_prompt": "$negative_prompt"
+}
+EOF
+  )
+
+  status=$(echo "$response" | grep -o '"status":"[^"]*"' | cut -d':' -f2 | tr -d '"')
+
+  if [ "$status" = "success" ]; then
+    echo -ne "${GREEN}[PASSED]${RESET} "
+  else
+    echo -ne "${RED}[FAILED]${RESET} "
+  fi
+
+  echo -e "url: ${url} --- response: ${response}"
+done
