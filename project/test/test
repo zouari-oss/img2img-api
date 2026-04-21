@@ -4,14 +4,14 @@
 [[ -s ${HOME}/.bash/.bash_colors ]] && . "${HOME}/.bash/.bash_colors"
 
 # Parameters
-images_url=('https://iili.io/B72CLut.png')
+images_url=('https://scontent.ftun20-1.fna.fbcdn.net/v/t39.30808-1/271159488_4673798509408023_6887572868317398225_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=105&ccb=1-7&_nc_sid=e99d92&_nc_ohc=30oiD0ENgtAQ7kNvwHPaXLS&_nc_oc=AdpV5w158c54fPZ3sPKWm6DhDDU1bnCbB6R9ZlifTs_dhC1_zDNUWXAnHfTPec9rZ48z0rKzjDYJZ_kXha8ljIZf&_nc_zt=24&_nc_ht=scontent.ftun20-1.fna&_nc_gid=2p_FBQBTMRDOH2dcPN0X7w&_nc_ss=7a3a8&oh=00_Af3W_osPcTqKU9NDFgsXCOJwDqRaqKcgikhdZkDMQ0mJMQ&oe=69EC8062' 'https://iili.io/B72CLut.png')
 prompt="Studio Ghibli-inspired Meta avatar, gentle anime-style digital human, soft hand-painted look, warm natural lighting, detailed expressive eyes, subtle freckles, soft watercolor shading, whimsical fantasy atmosphere, natural skin tones, flowing hair with soft motion, simple elegant clothing with slight futuristic elements, peaceful dreamy background, cinematic composition, ultra detailed, high quality illustration, film still from animated fantasy movie"
 negative_prompt="blurry, low quality, distorted face, bad anatomy, extra limbs, deformed hands, harsh lighting, plastic skin, overly realistic, noisy, oversharpened, 3d render look"
 
 # Test
 for url in "${images_url[@]}"; do
   response=$(
-    curl -s -X POST "http://127.0.0.1:8000/api/generate" \
+    curl -s -X POST "http://127.0.0.1:8001/api/generate" \
       -H "Content-Type: application/json" \
       -d @- <<EOF
 {
