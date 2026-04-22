@@ -112,8 +112,11 @@ curl -X POST "http://localhost:8000/api/generate" \
   -H "Content-Type: application/json" \
   -d '{
     "image_url":"https://example.com/input.jpg",
-    "prompt":"A photorealistic portrait of a golden retriever",
-    "negative_prompt":"lowres, blurry"
+    "prompt":"A fantasy landscape painting, vibrant colors, highly detailed",
+    "negative_prompt":"lowres, blurry",
+    "strength":0.55,
+    "guidance_scale":5.0,
+    "num_inference_steps":4
   }'
 ```
 
@@ -125,8 +128,11 @@ fetch("http://localhost:8000/api/generate", {
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     image_url: "https://example.com/input.jpg",
-    prompt: "A dreamy landscape",
-    negative_prompt: "",
+    prompt: "A fantasy landscape painting, vibrant colors, highly detailed",
+    negative_prompt: "lowres, blurry",
+    strength: 0.55,
+    guidance_scale: 5.0,
+    num_inference_steps: 4,
   }),
 })
   .then((res) => res.json())
@@ -141,8 +147,11 @@ fetch("http://localhost:8000/api/generate", {
 $ch = curl_init("http://localhost:8000/api/generate");
 $data = json_encode([
   "image_url" => "https://example.com/input.jpg",
-  "prompt" => "A watercolor painting of mountains",
-  "negative_prompt" => ""
+  "prompt" => "A fantasy landscape painting, vibrant colors, highly detailed",
+  "negative_prompt" => "lowres, blurry",
+  "strength" => 0.55,
+  "guidance_scale" => 5.0,
+  "num_inference_steps" => 4
 ]);
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -162,12 +171,23 @@ HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 conn.setRequestMethod("POST");
 conn.setRequestProperty("Content-Type", "application/json");
 conn.setDoOutput(true);
-String jsonInputString = "{\"image_url\":\"https://example.com/input.jpg\",\"prompt\":\"A surreal landscape\",\"negative_prompt\":\"\"}";
+
+String jsonInputString = "{"
+  + "\"image_url\":\"https://example.com/input.jpg\","
+  + "\"prompt\":\"A fantasy landscape painting, vibrant colors, highly detailed\","
+  + "\"negative_prompt\":\"lowres, blurry\","
+  + "\"strength\":0.55,"
+  + "\"guidance_scale\":5.0,"
+  + "\"num_inference_steps\":4"
+  + "}";
+
 try(OutputStream os = conn.getOutputStream()) {
   byte[] input = jsonInputString.getBytes("utf-8");
   os.write(input, 0, input.length);
 }
-try(BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+
+try(BufferedReader br = new BufferedReader(
+    new InputStreamReader(conn.getInputStream(), "utf-8"))) {
   StringBuilder response = new StringBuilder();
   String responseLine;
   while ((responseLine = br.readLine()) != null) {
@@ -182,17 +202,32 @@ try(BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputSt
 ```c
 #include <stdio.h>
 #include <curl/curl.h>
+
 int main(void){
   CURL *curl = curl_easy_init();
   if(curl) {
     struct curl_slist *headers = NULL;
     headers = curl_slist_append(headers, "Content-Type: application/json");
-    const char *data = "{\"image_url\":\"https://example.com/input.jpg\",\"prompt\":\"A cinematic cityscape\",\"negative_prompt\":\"\"}";
+
+    const char *data =
+      "{"
+      "\"image_url\":\"https://example.com/input.jpg\","
+      "\"prompt\":\"A fantasy landscape painting, vibrant colors, highly detailed\","
+      "\"negative_prompt\":\"lowres, blurry\","
+      "\"strength\":0.55,"
+      "\"guidance_scale\":5.0,"
+      "\"num_inference_steps\":4"
+      "}";
+
     curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:8000/api/generate");
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
+
     CURLcode res = curl_easy_perform(curl);
-    if(res != CURLE_OK) fprintf(stderr, "curl_easy_perform() failed: %s\n", curl_easy_strerror(res));
+    if(res != CURLE_OK)
+      fprintf(stderr, "curl_easy_perform() failed: %s\n",
+              curl_easy_strerror(res));
+
     curl_slist_free_all(headers);
     curl_easy_cleanup(curl);
   }
