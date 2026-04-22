@@ -25,13 +25,27 @@ def _find_first_url(obj):
 
 class GenerationService:
     @staticmethod
-    def generate(image_url: str, prompt: str, negative_prompt: str | None):
+    def generate(
+        image_url: str,
+        prompt: str,
+        negative_prompt: str | None,
+        strength: float | None = None,
+        guidance_scale: float | None = None,
+        num_inference_steps: int | None = None,
+    ):
 
         # 1. download input
         image = download_image(image_url)
 
         # 2. generate
-        output = diffusion_service.generate(image, prompt, negative_prompt)
+        output = diffusion_service.generate(
+            image,
+            prompt,
+            negative_prompt,
+            strength=strength,
+            guidance_scale=guidance_scale,
+            num_inference_steps=num_inference_steps,
+        )
 
         # 3. upload to freeimage.host only
         api_key = settings.FREEIMAGE_API_KEY

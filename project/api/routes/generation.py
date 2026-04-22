@@ -9,7 +9,12 @@ router = APIRouter()
 def generate_image(req: GenerationRequest):
 
     image_url = GenerationService.generate(
-        req.image_url, req.prompt, req.negative_prompt
+        req.image_url,
+        req.prompt,
+        req.negative_prompt,
+        req.strength,
+        req.guidance_scale,
+        req.num_inference_steps,
     )
 
     return {"status": "success", "image_url": image_url}

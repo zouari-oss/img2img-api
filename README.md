@@ -71,7 +71,10 @@ Request (JSON example):
 {
   "image_url": "https://example.com/input.jpg",
   "prompt": "A fantasy landscape painting, vibrant colors, highly detailed",
-  "negative_prompt": "lowres, blurry"
+  "negative_prompt": "lowres, blurry",
+  "strength": 0.55,
+  "guidance_scale": 5.0,
+  "num_inference_steps": 4
 }
 ```
 
